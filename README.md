@@ -5,7 +5,7 @@ A full-stack Django web application designed to automate Indian Income Tax calcu
 ![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
 ![Django](https://img.shields.io/badge/Django-5.0-green.svg)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple.svg)
-![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 
 ## 📌 Key Features
 
@@ -105,6 +105,8 @@ Push to branch: git push origin new-feature
 
 Submit a Pull Request.
 
-
-
 Developed by [Sagar Marale]
+```
+# Deployement Link:
+  admin: https://sagar7821.pythonanywhere.com/admin/
+  user: https://sagar7821.pythonanywhere.com/ 
