@@ -1,0 +1,87 @@
+{% extends 'tax_app/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-white py-3">
+                <h4 class="mb-0 text-primary"><i class="fas fa-calculator"></i> Smart Tax Filer</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Financial Year</label>
+                            {{ form.financial_year }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Annual Salary (₹)</label>
+                            {{ form.salary_income }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Other Sources (₹)</label>
+                            {{ form.other_income }}
+                        </div>
+                    </div>
+
+                    <div class="alert alert-secondary mt-4" role="alert">
+                        <h5 class="alert-heading"><i class="fas fa-bolt text-warning"></i> Live Estimate</h5>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <span>Estimated Tax Liability:</span>
+                            <span class="fw-bold fs-4 text-danger" id="liveTax">₹ 0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-gradient btn-lg">Submit & Generate Receipt</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Real-time calculation script
+    const salaryInput = document.querySelector('input[name="salary_income"]');
+    const otherInput = document.querySelector('input[name="other_income"]');
+    const display = document.getElementById('liveTax');
+
+    function calculateLive() {
+        let salary = parseFloat(salaryInput.value) || 0;
+        let other = parseFloat(otherInput.value) || 0;
+        let total = salary + other - 50000; // Standard Deduction
+        
+        if (total < 0) total = 0;
+        
+        let tax = 0;
+        
+        // Simplified Logic for JS Preview (Matches Python logic)
+        if (total > 300000) {
+            let remaining = total - 300000;
+            // 5% slab
+            let slab5 = Math.min(remaining, 300000);
+            tax += slab5 * 0.05;
+            remaining -= slab5;
+            
+            // 10% slab (Project logic)
+            if (remaining > 0) {
+                tax += remaining * 0.10;
+            }
+        }
+        
+        display.innerText = "₹ " + tax.toFixed(2);
+    }
+
+    // Attach listeners
+    salaryInput.addEventListener('input', calculateLive);
+    otherInput.addEventListener('input', calculateLive);
+</script>
+{% endblock %}
